@@ -52,7 +52,9 @@ export default function Main({ match }) {
 						<li key={user._id}>
 							<img src={user.avatar} alt={user.name} />
 							<footer>
-								<strong>{user.name}</strong>
+								<a href={`https://github.com/${user.user}`}>
+									<strong>{user.name}</strong>
+								</a>
 								<p>{user.bio}</p>
 							</footer>
 

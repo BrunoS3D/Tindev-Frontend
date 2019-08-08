@@ -33,9 +33,14 @@
 	border-radius: 0 0 5px 5px;
 }
 
-.main-container ul li footer strong {
+.main-container ul li footer a {
 	font-size: 16px;
 	color: #333;
+	text-decoration: none;
+}
+
+.main-container ul li footer a:hover {
+	text-decoration: underline;
 }
 
 .main-container ul li footer p {
