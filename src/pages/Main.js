@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 import { Link } from 'react-router-dom'
 import './Main.css'
 
 import api from '../services/api'
 
 import logo from '../assets/logo.svg'
-import like from '../assets/like.svg'
 import dislike from '../assets/dislike.svg'
+import like from '../assets/like.svg'
+import itsamatch from '../assets/itsamatch.png'
+
+// const host = 'http://localhost:3333'
+const host = 'https://mib-tindev-backend.herokuapp.com'
 
 export default function Main({ match }) {
 	const [users, setUsers] = useState([]);
+	const [matchDev, setMatchDev] = useState(null);
 
 	useEffect(() => {
 		async function loadUsers() {
@@ -23,6 +29,19 @@ export default function Main({ match }) {
 		}
 
 		loadUsers();
+	}, [match.params.id]);
+
+	useEffect(() => {
+		const socket = io(host, {
+			query: {
+				user: match.params.id,
+			}
+		});
+
+		socket.on('match', dev => {
+			setMatchDev(dev);
+		})
+
 	}, [match.params.id]);
 
 	async function handleLike(id) {
@@ -72,6 +91,17 @@ export default function Main({ match }) {
 			) : (
 					<div className="empty">Acabou :(</div>
 				)}
+
+			{matchDev && (
+				<div className="match-container">
+					<img src={itsamatch} alt="It's a match" />
+					<img className="avatar" src={matchDev.avatar} alt={matchDev.name} />
+					<strong>{matchDev.name}</strong>
+					<p>{matchDev.bio}</p>
+
+					<button type="button" onClick={() => setMatchDev(null)}>FECHAR</button>
+				</div>
+			)}
 		</div>
 	);
 }
